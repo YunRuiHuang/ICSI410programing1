@@ -5,6 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.LinkedHashMap;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+
+
 
 /**
  * A {@code RelationSchema} represents the schema of a relation.
@@ -93,7 +97,8 @@ public class RelationSchema implements java.io.Serializable {
 	 */
 	public int size() {
 		// TODO complete this method
-		return 0;
+		
+		return this.attributeNames.length;
 	}
 
 	/**
@@ -107,7 +112,12 @@ public class RelationSchema implements java.io.Serializable {
 	 */
 	public String attributeName(int attributeIndex) throws InvalidAttributeIndexException {
 		// TODO complete this method
-		return null;
+		if(attributeIndex != -1) {
+			return this.attributeNames[attributeIndex];
+		}else {
+			throw new InvalidAttributeIndexException();
+		}
+		
 	}
 
 	/**
@@ -121,7 +131,12 @@ public class RelationSchema implements java.io.Serializable {
 	 */
 	public Class<?> attributeType(int attributeIndex) throws InvalidAttributeIndexException {
 		// TODO complete this method
-		return null;
+		if(attributeIndex != -1) {
+			return this.attributeTypes[attributeIndex];
+		}else {
+			throw new InvalidAttributeIndexException();
+		}
+		
 	}
 
 	/**
@@ -133,6 +148,11 @@ public class RelationSchema implements java.io.Serializable {
 	 */
 	public Integer attributeIndex(String attributeName) {
 		// TODO complete this method
+		for(int i = 0; i < this.attributeNames.length; i++) {
+			if(this.attributeNames[i].equals(attributeName)) {
+				return i;
+			}
+		}
 		return null;
 	}
 
@@ -148,6 +168,13 @@ public class RelationSchema implements java.io.Serializable {
 	 */
 	public void save(String fileName) throws FileNotFoundException, IOException {
 		// TODO complete this method
+		try(FileOutputStream out = new FileOutputStream(fileName)){
+			try(ObjectOutputStream schema = new ObjectOutputStream(out)){
+				schema.writeObject(this);
+				
+			}catch(IOException e) {}
+		}catch(FileNotFoundException e){}
+			
 	}
 
 	/**

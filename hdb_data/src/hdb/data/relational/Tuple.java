@@ -97,6 +97,17 @@ public class Tuple implements java.io.Serializable {
 	 */
 	public void setAttribute(int attributeIndex, Object o) throws TypeException, InvalidAttributeIndexException {
 		// TODO complete this method
+		if(this.schema.getClass().equals(o.getClass())){
+			if(attributeIndex != -1 || attributeIndex >= schema.size()) {
+				attributeValues[attributeIndex] = o;
+				
+			}else {
+				throw new InvalidAttributeIndexException();
+			}
+			
+		}else {
+			throw new TypeException();
+		}
 	}
 
 	/**
