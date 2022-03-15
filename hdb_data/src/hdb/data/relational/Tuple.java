@@ -97,17 +97,20 @@ public class Tuple implements java.io.Serializable {
 	 */
 	public void setAttribute(int attributeIndex, Object o) throws TypeException, InvalidAttributeIndexException {
 		// TODO complete this method
-		if(this.schema.getClass().equals(o.getClass())){
-			if(attributeIndex != -1 || attributeIndex >= schema.size()) {
+		if(attributeIndex != -1 || attributeIndex <= schema.size()) {
+			if(this.schema.attributeType(attributeIndex).isInstance(o)){
 				attributeValues[attributeIndex] = o;
 				
 			}else {
-				throw new InvalidAttributeIndexException();
+				throw new TypeException();
 			}
 			
 		}else {
-			throw new TypeException();
+			throw new InvalidAttributeIndexException();
 		}
+		
+		
+		
 	}
 
 	/**
@@ -120,6 +123,11 @@ public class Tuple implements java.io.Serializable {
 	 */
 	public void writeAttributes(ObjectOutputStream out) throws IOException {
 		// TODO complete this method
+		for(int i = 0; i < this.attributeValues.length; i++) {
+			try{
+				write(this.attributeValues[i], out);
+			}catch(IOException e) {}
+		}
 	}
 
 	/**
@@ -158,7 +166,17 @@ public class Tuple implements java.io.Serializable {
 	 */
 	protected void write(Object o, ObjectOutputStream out) throws IOException {
 		// TODO complete this method
-		out.writeObject(o);
+		try{
+			if(o instanceof Double) {
+				out.writeDouble((double)o);
+			}else if(o instanceof Integer) {
+				out.writeInt((int)o);
+			}else {
+				out.writeObject(o);
+			}
+		}catch(IOException e) {}
+		
+		
 	}
 
 	/**
@@ -176,7 +194,23 @@ public class Tuple implements java.io.Serializable {
 	 */
 	protected Object read(Class<?> type, ObjectInputStream in) throws IOException, ClassNotFoundException {
 		// TODO complete this method
-		return in.readObject();
+//		return in.readObject();
+		try{
+			if(type.equals(Double.class)) {
+//				try {
+					return in.readDouble();
+//				}catch(ClassNotFoundException e) {}
+			}else if(type.equals(Integer.class)) {
+//				try {
+					return in.readInt();
+//				}catch(ClassNotFoundException e) {}
+			}else{
+				try {
+					return in.readObject();
+				}catch(ClassNotFoundException e) {}
+			}
+		}catch(IOException e) {}
+		return null;
 	}
 
 }

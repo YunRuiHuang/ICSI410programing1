@@ -98,7 +98,16 @@ public class CollectionSchema implements java.io.Serializable {
 	 */
 	public int[] attributeIndex(String attributeName) {
 		// TODO complete this method
-		return null;
+		if(this.name2index.get(attributeName) != null) {
+			int[] a = {this.name2index.get(attributeName)};
+			return a;
+		}else {
+			this.name2index.put(attributeName, this.name2index.size());
+			this.index2name.put(this.index2name.size(), attributeName);
+			int[] a = {this.name2index.get(attributeName)};
+			return a;
+		}
+		
 	}
 
 	/**
@@ -112,7 +121,11 @@ public class CollectionSchema implements java.io.Serializable {
 	 */
 	public String attributeName(int[] attributeIndex) throws InvalidAttributeIndexException {
 		// TODO complete this method
+		if(this.index2name.get(attributeIndex[0]) != null) {
+			return this.index2name.get(attributeIndex[0]);
+		}
 		return null;
+		
 	}
 
 }

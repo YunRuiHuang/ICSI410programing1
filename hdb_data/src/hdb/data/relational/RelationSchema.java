@@ -112,7 +112,7 @@ public class RelationSchema implements java.io.Serializable {
 	 */
 	public String attributeName(int attributeIndex) throws InvalidAttributeIndexException {
 		// TODO complete this method
-		if(attributeIndex != -1) {
+		if(attributeIndex >= 0 && attributeIndex < this.attributeNames.length) {
 			return this.attributeNames[attributeIndex];
 		}else {
 			throw new InvalidAttributeIndexException();
@@ -131,7 +131,7 @@ public class RelationSchema implements java.io.Serializable {
 	 */
 	public Class<?> attributeType(int attributeIndex) throws InvalidAttributeIndexException {
 		// TODO complete this method
-		if(attributeIndex != -1) {
+		if(attributeIndex >= 0 && attributeIndex < this.attributeNames.length) {
 			return this.attributeTypes[attributeIndex];
 		}else {
 			throw new InvalidAttributeIndexException();
